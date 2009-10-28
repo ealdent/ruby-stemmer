@@ -1,6 +1,25 @@
 = ruby-stemmer
 
-Description goes here.
+Ruby-Stemmer exposes SnowBall API stemmer implementation to ruby.
+This package includes libstemmer_c library – released under BSD licence 
+and available for download at: http://snowball.tartarus.org/dist/libstemmer_c.tgz.
+For details about libstemmer_c please check libstemmer_c/README or http://snowball.tartarus.org.
+
+== What id does?
+
+The stemming process is developed to allow one to find the stem of an word and 
+it's not an algorithm where you can get the root of it.
+
+For further reference on stem vs. root, please check wikipedia articles on the topic:
+
+* http://en.wikipedia.org/wiki/Stem_(linguistics)
+* http://en.wikipedia.org/wiki/Root_(linguistics)
+
+== Install
+
+ gem install ruby-stemmer
+
+Please not that Windows is not supported at this time.
 
 == Note on Patches/Pull Requests
  
