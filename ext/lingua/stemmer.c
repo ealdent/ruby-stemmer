@@ -100,7 +100,7 @@ rb_stemmer_stem(VALUE self, VALUE word) {
  * Document-method: language
  * call-seq: language
  *
- * Gets the language for this stememr
+ * Gets the language for this stemmer
  *
  *   require 'lingua/stemmer'
  *   s = Lingua::Stemmer.new(:language => "fr")
@@ -117,10 +117,10 @@ rb_stemmer_language(VALUE self) {
  * Document-method: encoding
  * call-seq: encoding
  *
- * Gets the encoding for this stememr
+ * Gets the encoding for this stemmer
  *
  *   require 'lingua/stemmer'
- *   s = Lingua::Stemmer.new(:language => "UTF_*")
+ *   s = Lingua::Stemmer.new(:language => "UTF_8")
  *   s.encoding #=> "UTF_8"
  */ 
 static VALUE
@@ -128,26 +128,6 @@ rb_stemmer_encoding(VALUE self) {
   struct sb_stemmer_data * sb_data;
   GetStemmer(self, sb_data);
   return rb_str_new2(sb_data->enc);
-}
-
-/*
- * Document-method: length
- * call-seq: length
- *
- * Gets the length of the last stemmed word
- *
- *   require 'lingua/stemmer'
- *   s = Lingua::Stemmer.new
- *   s.stem "installation"
- *   s.length # ==> 6
- */ 
-static VALUE
-rb_stemmer_length(VALUE self) {
-  struct sb_stemmer_data * sb_data;
-  int length;
-  GetStemmer(self, sb_data);
-  length = sb_stemmer_length(sb_data->stemmer);
-  return INT2FIX(length);
 }
 
 static void
@@ -172,7 +152,6 @@ void Init_stemmer_native() {
   rb_eStemmerError = rb_define_class_under(rb_mLingua, "StemmerError", rb_eException);  
   rb_define_method(rb_cStemmer, "initialize", rb_stemmer_init, -1);
   rb_define_method(rb_cStemmer, "stem", rb_stemmer_stem, 1);
-  rb_define_method(rb_cStemmer, "length", rb_stemmer_length, 0);
   rb_define_method(rb_cStemmer, "language", rb_stemmer_language, 0);
   rb_define_method(rb_cStemmer, "encoding", rb_stemmer_encoding, 0);
 }
