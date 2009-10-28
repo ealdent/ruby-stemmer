@@ -1,39 +1,53 @@
 require 'rubygems'
 require 'rake'
-require 'echoe'
 
-Echoe.new('ruby-stemmer', '0.5.5') do |p|
-    p.description    = "Stemmer implementation to ruby using libstemmer_c."
-    p.url            = "http://github.com/aurelian/ruby-stemmer"
-    p.author         = "Aurelian Oancea, Yury Korolev"
-    p.email          = "oancea@gmail.com, yury.korolev@gmail.com"
-    p.extensions     = ["extconf.rb"]
-    p.ignore_pattern = ["*.o", "**/*.o", "stemwords", "*.bundle", "*.a", "*.so"]
-    p.development_dependencies = []
-    p.runtime_dependencies = []
-    p.has_rdoc = true
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "ruby-stemmer"
+    gem.summary = %Q{Expose libstemmer_c to Ruby.}
+    gem.description = %Q{Expose the bundled libstemmer_c library to Ruby.}
+    gem.email = "oancea@gmail.com"
+    gem.homepage = "http://github.com/aurelian/ruby-stemmer"
+    gem.authors = ["Aurelian Oancea", "Yury Korolev"]
+    gem.extensions = ["ext/lingua/extconf.rb"]
+    gem.rubyforge_project = "ruby-stemmer"
+    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+  end
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-rm_rf 'Makefile'
-
-PKG_FILES = FileList[
-  'extconf.rb',
-  'ruby-stemmer.c',
-  'test.rb',
-  '[A-Z]*',
-  'libstemmer_c/**/*'
-]
-
-PKG_FILES.exclude('*.o')
-PKG_FILES.exclude('**/*.o')
-PKG_FILES.exclude('stemwords')
-PKG_FILES.exclude('*.bundle')
-PKG_FILES.exclude('*.a')
-PKG_FILES.exclude('*.so')
-
-desc "Cleans the workspace"
-task :clean do
-  `rm -rf Makefile mkmf.log ruby-stemmer.o stemmer.bundle stemmer.so`
-  `cd libstemmer_c && make clean && cd ../`
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |test|
+  test.libs << 'lib' << 'test'
+  test.pattern = 'test/**/test_*.rb'
+  test.verbose = true
 end
 
+begin
+  require 'rcov/rcovtask'
+  Rcov::RcovTask.new do |test|
+    test.libs << 'test'
+    test.pattern = 'test/**/test_*.rb'
+    test.verbose = true
+  end
+rescue LoadError
+  task :rcov do
+    abort "RCov is not available. In order to run rcov, you must: sudo gem install spicycode-rcov"
+  end
+end
+
+task :test => :check_dependencies
+
+task :default => :test
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "ruby-stemmer #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
