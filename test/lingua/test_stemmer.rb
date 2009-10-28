@@ -33,7 +33,7 @@ class TestStemmer < Test::Unit::TestCase
   end
 
   def test_array_stemmer
-    results= ::Lingua.stemmer(["one", "two"], :language => "fr", :encoding => "ISO_8859_1")
+    results= ::Lingua.stemmer(["one", "two"], :language => "de", :encoding => "ISO_8859_1")
     assert_equal 2, results.size
     assert_kind_of Array, results
   end

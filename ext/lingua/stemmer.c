@@ -1,7 +1,3 @@
-//
-// $Id: ruby-stemmer.c 20 2008-04-29 20:59:56Z aurelian $
-//
-
 #include "ruby.h"
 #include <libstemmer.h>
 
@@ -143,7 +139,7 @@ sb_stemmer_alloc(VALUE klass)
 }
 
 /*
- * ruby-stemmer, ruby extension to SnowBall API using libstemmer_c
+ * Ruby-Stemmer, Ruby extension to SnowBall API using libstemmer_c
  */
 void Init_stemmer_native() {
   rb_mLingua = rb_define_module("Lingua");

@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ruby-stemmer}
-  s.version = "0.6.0"
+  s.version = "0.6.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aurelian Oancea", "Yury Korolev"]
@@ -17,9 +17,7 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    ".document",
-     ".gitignore",
-     "MIT-LICENSE",
+    "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
@@ -106,7 +104,6 @@ Gem::Specification.new do |s|
      "libstemmer_c/src_c/stem_UTF_8_swedish.h",
      "libstemmer_c/src_c/stem_UTF_8_turkish.c",
      "libstemmer_c/src_c/stem_UTF_8_turkish.h",
-     "ruby-stemmer.gemspec",
      "test/helper.rb",
      "test/lingua/test_stemmer.rb"
   ]

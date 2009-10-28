@@ -1,4 +1,3 @@
-require 'yaml'
 require 'lingua/stemmer_native'
 
 module Lingua
@@ -20,6 +19,6 @@ module Lingua
   end
 
   class Stemmer
-    VERSION = YAML.load_file(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "VERSION")))
+    VERSION = File.read(File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "VERSION")))
   end
 end

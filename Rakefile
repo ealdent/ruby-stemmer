@@ -12,9 +12,17 @@ begin
     gem.authors = ["Aurelian Oancea", "Yury Korolev"]
     gem.extensions = ["ext/lingua/extconf.rb"]
     gem.rubyforge_project = "ruby-stemmer"
+    gem.files = FileList['lib/**/*.rb', 'README.rdoc', 'MIT-LICENSE', 'VERSION', 'Rakefile', 'libstemmer_c/**/*', 'ext/**/*', 'test/**/*']
+    %w(ext/lingua/*.so ext/lingua/*.bundle ext/lingua/Makefile ext/lingua/mkmf.log ext/lingua/*.o libstemmer_c/**/*.o).each do | f |
+      gem.files.exclude f
+    end
     # gem.ignore_pattern = ["*.o", "**/*.o", "stemwords", "*.bundle", "*.a", "*.so", "Makefile"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
+  Jeweler::GemcutterTasks.new
+  Jeweler::RubyforgeTasks.new do |rubyforge|
+    rubyforge.doc_task = "rdoc"
+  end  
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
@@ -59,7 +67,9 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "ruby-stemmer #{version}"
+  rdoc.title = "Ruby-Stemmer #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('ext/lingua/stemmer.c')
+  rdoc.rdoc_files.include('MIT-LICENSE')
 end
