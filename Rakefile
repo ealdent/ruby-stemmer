@@ -12,7 +12,7 @@ begin
     gem.authors = ["Aurelian Oancea", "Yury Korolev"]
     gem.extensions = ["ext/lingua/extconf.rb"]
     gem.rubyforge_project = "ruby-stemmer"
-    gem.ignore_pattern = ["*.o", "**/*.o", "stemwords", "*.bundle", "*.a", "*.so", "Makefile"]
+    # gem.ignore_pattern = ["*.o", "**/*.o", "stemwords", "*.bundle", "*.a", "*.so", "Makefile"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
@@ -45,7 +45,7 @@ task :default => :test
 
 desc "Cleans the project"
 task :clean do
-  `cd ext/lingua && rm -rf Makefile mkmf.log ruby-stemmer.o stemmer.bundle stemmer.so; cd ../../`
+  `cd ext/lingua && rm -rf Makefile mkmf.log stemmer.o stemmer_native.bundle stemmer.so; cd ../../`
   `cd libstemmer_c && make clean && cd ../`
 end
 
