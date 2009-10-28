@@ -42,6 +42,17 @@ task :test => :check_dependencies
 
 task :default => :test
 
+desc "Cleans the project"
+task :clean do
+  `cd ext/lingua && rm -rf Makefile mkmf.log ruby-stemmer.o stemmer.bundle stemmer.so; cd ../../`
+  `cd libstemmer_c && make clean && cd ../`
+end
+
+desc "Builds the extension"
+task :ext => :clean do
+  `cd ext/lingua/ && ruby extconf.rb && make && cd ../../`
+end
+
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""

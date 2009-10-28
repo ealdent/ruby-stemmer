@@ -1,8 +1,10 @@
 require 'rubygems'
 require 'test/unit'
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+%w(. ../lib ../ext).each do |path|
+  $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), path)))
+end
+
 require 'lingua/stemmer'
 
 class Test::Unit::TestCase
