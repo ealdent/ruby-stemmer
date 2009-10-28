@@ -13,5 +13,5 @@ $CFLAGS  += " -I#{File.join(LIBSTEMMER, 'include')} "
 $libs    += " -L#{LIBSTEMMER} #{File.join(LIBSTEMMER, 'libstemmer.o')} "
 
 if have_header("libstemmer.h")
-  create_makefile("lingua/stemmer")
+  create_makefile("lingua/stemmer_native")
 end

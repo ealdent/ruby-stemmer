@@ -11,6 +11,7 @@
 
 VALUE rb_mLingua;
 VALUE rb_cStemmer;
+VALUE rb_eStemmerError;
 
 struct sb_stemmer_data {
   struct sb_stemmer * stemmer;
@@ -57,10 +58,10 @@ rb_stemmer_init(int argc, VALUE *argv, VALUE self) {
   stemmer = sb_stemmer_new( RSTRING_PTR(rlang), RSTRING_PTR(renc) );
   if (stemmer == 0) {
     if (renc == 0 ) {
-      rb_raise(rb_eRuntimeError, "Language %s not available for stemming", RSTRING_PTR(rlang));
+      rb_raise(rb_eStemmerError, "Language %s not available for stemming", RSTRING_PTR(rlang));
       exit(1);
     } else {
-      rb_raise(rb_eRuntimeError, "Language %s not available for stemming in encoding %s", 
+      rb_raise(rb_eStemmerError, "Language %s not available for stemming in encoding %s", 
                     RSTRING_PTR(rlang), RSTRING_PTR(renc));
       exit(1);
     }
@@ -93,6 +94,40 @@ rb_stemmer_stem(VALUE self, VALUE word) {
   GetStemmer(self, sb_data);
   stemmed = sb_stemmer_stem(sb_data->stemmer, (sb_symbol *)RSTRING_PTR(s_word), RSTRING_LEN(s_word));
   return rb_str_new2((char *)stemmed);
+}
+
+/*
+ * Document-method: language
+ * call-seq: language
+ *
+ * Gets the language for this stememr
+ *
+ *   require 'lingua/stemmer'
+ *   s = Lingua::Stemmer.new(:language => "fr")
+ *   s.language #=> "fr"
+ */ 
+static VALUE
+rb_stemmer_language(VALUE self) {
+  struct sb_stemmer_data * sb_data;
+  GetStemmer(self, sb_data);
+  return rb_str_new2(sb_data->lang);
+}
+
+/*
+ * Document-method: encoding
+ * call-seq: encoding
+ *
+ * Gets the encoding for this stememr
+ *
+ *   require 'lingua/stemmer'
+ *   s = Lingua::Stemmer.new(:language => "UTF_*")
+ *   s.encoding #=> "UTF_8"
+ */ 
+static VALUE
+rb_stemmer_encoding(VALUE self) {
+  struct sb_stemmer_data * sb_data;
+  GetStemmer(self, sb_data);
+  return rb_str_new2(sb_data->enc);
 }
 
 /*
@@ -130,12 +165,15 @@ sb_stemmer_alloc(VALUE klass)
 /*
  * ruby-stemmer, ruby extension to SnowBall API using libstemmer_c
  */
-void Init_stemmer() {
+void Init_stemmer_native() {
   rb_mLingua = rb_define_module("Lingua");
   rb_cStemmer = rb_define_class_under(rb_mLingua, "Stemmer", rb_cObject);
   rb_define_alloc_func(rb_cStemmer, sb_stemmer_alloc);
+  rb_eStemmerError = rb_define_class_under(rb_mLingua, "StemmerError", rb_eException);  
   rb_define_method(rb_cStemmer, "initialize", rb_stemmer_init, -1);
   rb_define_method(rb_cStemmer, "stem", rb_stemmer_stem, 1);
   rb_define_method(rb_cStemmer, "length", rb_stemmer_length, 0);
+  rb_define_method(rb_cStemmer, "language", rb_stemmer_language, 0);
+  rb_define_method(rb_cStemmer, "encoding", rb_stemmer_encoding, 0);
 }
 
